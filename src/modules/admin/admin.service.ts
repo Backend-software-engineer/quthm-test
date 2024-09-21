@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TaskDbService } from 'src/common/service/entity.service.js';
+import { TaskDbService } from '../../common/service/entity.service.js';
 
 @Injectable()
 export class AdminService {

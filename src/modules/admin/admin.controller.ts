@@ -63,6 +63,7 @@ export class AdminController {
   async deleteTask(@Param('taskId') taskId: string) {
     try {
       const task = await this.adminService.removeTask(taskId);
+      return task
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.EXPECTATION_FAILED);
     }

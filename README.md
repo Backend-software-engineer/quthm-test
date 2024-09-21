@@ -34,7 +34,7 @@ To run the Quthm Task Management App locally, follow these steps:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/quthm-task-management.git
+    git clone https://gitlab.com/muhammadwaleed872.tts/task-management-app.git
     ```
 
 2. Navigate to the project directory:
@@ -50,8 +50,14 @@ To run the Quthm Task Management App locally, follow these steps:
 4. Set up your environment variables by creating a `.env.development` for development in env folder (root director) 
 
     ```bash
-    MONGO_URI=your_mongodb_uri
-    JWT_SECRET=your_jwt_secret
+    DATABASE_URL=your_mongodb_uri
+    ACCESS_TOKEN_EXPIRY=15m
+    REFRESH_TOKEN_EXPIRY='2d'
+    JWT_ACCESS_SECRET_KEY=your_jwt_secret
+    JWT_REFRESH_SECRET_KEY=your_jwt_secret
+    WORKSPACE_EMAIL=youemail@yahoo.com
+    WORKSPACE_PASSWORD=password
+
     ```
 
 5. Run the server in development mode:
@@ -77,3 +83,9 @@ Once the server is running, users can interact with the following task managemen
 - **Real-Time Updates**: Receive instant updates when tasks are modified or completed through Socket.io.
 
 ---
+
+## Important Note
+To revoke jwt i am sending accessToken with less expire time and refreshToken with long expiry time
+
+I have not implemented completely for revoking mechanism in this version.
+

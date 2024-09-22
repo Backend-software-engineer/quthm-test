@@ -8,9 +8,12 @@ import {
   Patch,
   Post,
   Query,
+  Request,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Auth } from '../../common/guards/auth/index.js';
 import { AuthService } from './auth.service.js';
 import {
   CheckUserEmailDto,
@@ -55,12 +58,14 @@ export class AuthController {
     }
   }
 
-  @Patch('/verify-email/:userId')
+  @Patch('/verify-email')
+  @UseGuards(Auth)
   async verifyEmail(
-    @Param('userId') userId: string,
+    @Request() req: any,
     @Body() userVerifyEmailDto: UserVerifyEmailDto,
   ) {
     try {
+      const userId = req.user._id;
       const user = await this.authService.verifyEmail({
         ...userVerifyEmailDto,
         userId,

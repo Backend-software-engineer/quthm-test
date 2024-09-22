@@ -98,7 +98,7 @@ export class AuthService {
   }
 
   async sendOTP(userId: string) {
-    const user = await UserDbService.getRecordById(userId);
+    const user = await UserDbService.getRecordById(userId, '+role');
     if (!user) {
       throw new Error('invalid userId');
     }
@@ -113,8 +113,14 @@ export class AuthService {
     }
 
     const emailRequest = await emailUtils.sendOTPVerificationEmail(user);
+    const authUtils = new AuthUtils();
+    const token = authUtils.generateTempToken({ id: user.id, role: user.role });
     if (emailRequest.accepted) {
-      return { success: true, message: 'OTP sent successfully' };
+      return {
+        success: true,
+        message: 'OTP sent successfully',
+        token,
+      };
     } else {
       throw new Error('Error in sending email. Please resend');
     }
@@ -180,7 +186,7 @@ export class AuthService {
     const select = '+credentialDetails.password +role';
     const user = await UserDbService.getRecord(
       { 'credentialDetails.email': email },
-      select, 
+      select,
     );
 
     if (!user) {
@@ -188,7 +194,10 @@ export class AuthService {
     }
 
     if (!user.verifyStatus.emailVerified) {
-      throw new Error('Please verify your email first');
+      return {
+        message: 'Please verify your email first',
+        user: { _id: user.id },
+      };
     }
     if (user.status !== 'active') {
       throw new Error('Your account is not active.Please contact our support');

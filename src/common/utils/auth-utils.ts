@@ -37,4 +37,21 @@ export class AuthUtils {
     );
     return refreshToken;
   }
+
+  generateTempToken(payload: { id: Types.ObjectId; role: string }) {
+    const accessToken = this.jwtService.sign(
+      {
+        ...payload,
+        iss: 'task.com',
+        aud: payload.role,
+        type: 'access_token',
+      },
+      {
+        secret: this.configService.get('JWT_ACCESS_SECRET_KEY'),
+        expiresIn: '5m',
+      },
+    );
+
+    return accessToken;
+  }
 }

@@ -24,7 +24,6 @@ export class TaskController {
 
   @Post('/')
   @UseGuards(Auth)
-  @Roles('admin', 'user', 'super-admin')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async createTask(@Request() req: any, @Body() CreateTaskDto: CreateTaskDto) {
     try {
@@ -43,7 +42,6 @@ export class TaskController {
 
   @Get('/')
   @UseGuards(Auth)
-  @Roles('admin', 'user', 'super-admin')
   async getTasks(
     @Request() req: any,
     @Query() query: { status?: string; page?: number; limit?: number },
@@ -69,7 +67,6 @@ export class TaskController {
   // update task
   @Patch('/:taskId')
   @UseGuards(Auth)
-  @Roles('admin', 'user', 'super-admin')
   async updateTask(
     @Request() req: any,
     @Param('taskId') taskId: string,
@@ -94,7 +91,6 @@ export class TaskController {
 
   @Get('/:taskId')
   @UseGuards(Auth)
-  @Roles('admin', 'user', 'super-admin')
   async taskDetails(@Param('taskId') taskId: string) {
     try {
       const task = await this.taskService.taskDetails(taskId)

@@ -42,6 +42,7 @@ export class SocketGateway
     this.server.emit('message', `payload: ${payload}`);
   }
 
+  // From front end i will listen this event as user joined
   @SubscribeMessage('user-joined')
   handleUserJoined(client: Socket, payload: { userId: string }) {
     const { userId } = payload;

@@ -13,7 +13,6 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Roles } from '../../common/decorators.ts/roles.decorator.js';
 import { Auth } from '../../common/guards/auth/index.js';
 import { CreateTaskDto, UpdateTaskDto } from './dto/task-dto.js';
 import { TaskService } from './task.service.js';
@@ -91,12 +90,14 @@ export class TaskController {
 
   @Get('/:taskId')
   @UseGuards(Auth)
-  async taskDetails(@Param('taskId') taskId: string) {
+  async taskDetails(@Param('taskId') taskId: string, @Request() req: any) {
     try {
-      const task = await this.taskService.taskDetails(taskId)
-      return task
+      const userId = req.user.id;
+      const role = req.user.role;
+      const task = await this.taskService.taskDetails(taskId, userId, role);
+      return task;
     } catch (error) {
-      throw new HttpException(error.message,HttpStatus.EXPECTATION_FAILED)
+      throw new HttpException(error.message, HttpStatus.EXPECTATION_FAILED);
     }
   }
 }

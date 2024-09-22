@@ -81,8 +81,16 @@ export class TaskService {
     return updatedTask;
   }
 
-  async taskDetails(taskId: string | Types.ObjectId) {
+  async taskDetails(
+    taskId: string | Types.ObjectId,
+    userId: string,
+    role: string,
+  ) {
     const task = await TaskDbService.getRecordById(taskId);
+    // extra security check
+    if (role === 'user' && task.assigneeId != userId) {
+      throw new Error('You can view only your tasks');
+    }
     if (!task) {
       throw new Error('invalid taskId');
     }

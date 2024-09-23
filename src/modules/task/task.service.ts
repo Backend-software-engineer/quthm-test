@@ -67,7 +67,7 @@ export class TaskService {
       throw new Error('invalid taskId');
     }
     // Just an extra level of security, otherwise through get API user will see only their tasks
-    if (role == 'user' && task.assigneeId != userId) {
+    if (role == 'user' && !task.assigneeId.equals(userId)) {
       throw new Error('You can update only your tasks');
     }
 

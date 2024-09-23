@@ -220,7 +220,7 @@ export class AuthService {
       id: user.id,
       role: user.role,
     });
-
+    user.credentialDetails.password = undefined;
     return {
       success: true,
       message: 'Login successfully',
